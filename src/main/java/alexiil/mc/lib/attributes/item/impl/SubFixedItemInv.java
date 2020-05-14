@@ -27,8 +27,8 @@ public class SubFixedItemInv extends SubFixedItemInvView implements FixedItemInv
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
-        return inv().setInvStack(getInternalSlot(slot), to, simulation);
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
+        return inv().setStack(getInternalSlot(slot), to, simulation);
     }
 
     @Override

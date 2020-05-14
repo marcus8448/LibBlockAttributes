@@ -33,7 +33,7 @@ public class SingleItemSlot extends SingleItemSlotView implements ItemTransferab
      *         FixedItemInvView.isItemValidForSlot(int, ItemStack) test). */
     @Override
     public final boolean set(ItemStack to, Simulation simulation) {
-        return getBackingInv().setInvStack(slot, to, simulation);
+        return getBackingInv().setStack(slot, to, simulation);
     }
 
     /** Sets the stack in the given slot to the given stack, or throws an exception if it was not permitted. */

@@ -58,7 +58,7 @@ public class SimpleLimitedFixedItemInv extends DelegatingFixedItemInv implements
                 }
                 FixedItemInv inv = SimpleLimitedFixedItemInv.this;
                 for (int s = 0; s < getSlotCount(); s++) {
-                    ItemStack slotStack = inv.getInvStack(s);
+                    ItemStack slotStack = inv.getStack(s);
                     int minimum = minimumAmounts[s];
                     int available = slotStack.getCount() - minimum;
                     if (slotStack.isEmpty() || available <= 0) {
@@ -76,7 +76,7 @@ public class SimpleLimitedFixedItemInv extends DelegatingFixedItemInv implements
 
             // No need to override attemptInsertion because:
             // - The maximum insertion amount is already available via FixedItemInv.getMaxAmount
-            // - The item filter will already be followed via setInvStack.
+            // - The item filter will already be followed via setStack.
         };
     }
 
@@ -146,8 +146,8 @@ public class SimpleLimitedFixedItemInv extends DelegatingFixedItemInv implements
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
-        ItemStack current = getInvStack(slot);
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
+        ItemStack current = getStack(slot);
         boolean same = ItemStackUtil.areEqualIgnoreAmounts(current, to);
         boolean isExtracting = !same || to.getCount() < current.getCount();
         boolean isInserting = !same || to.getCount() > current.getCount();
@@ -173,7 +173,7 @@ public class SimpleLimitedFixedItemInv extends DelegatingFixedItemInv implements
                 return false;
             }
         }
-        return super.setInvStack(slot, to, simulation);
+        return super.setStack(slot, to, simulation);
     }
 
     @Override

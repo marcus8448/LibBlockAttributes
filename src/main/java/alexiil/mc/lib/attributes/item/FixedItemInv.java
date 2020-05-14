@@ -47,18 +47,18 @@ public interface FixedItemInv extends FixedItemInvView {
      *         a {@link ItemStack#copy() copy}: changing the returned {@link ItemStack} might not change the next
      *         returned stack. */
     @Override
-    ItemStack getInvStack(int slot);
+    ItemStack getStack(int slot);
 
     /** Sets the stack in the given slot to the given stack.
      * 
      * @param to The new {@link ItemStack}. It is not defined if you are allowed to modify this or not.
      * @return True if the modification was allowed, false otherwise. (For example if the given stack doesn't pass the
      *         {@link FixedItemInvView#isItemValidForSlot(int, ItemStack)} test). */
-    boolean setInvStack(int slot, ItemStack to, Simulation simulation);
+    boolean setStack(int slot, ItemStack to, Simulation simulation);
 
     /** Sets the stack in the given slot to the given stack, or throws an exception if it was not permitted. */
     default void forceSetInvStack(int slot, ItemStack to) {
-        if (!setInvStack(slot, to, Simulation.ACTION)) {
+        if (!setStack(slot, to, Simulation.ACTION)) {
             throw new IllegalStateException(
                 "Unable to force-set the slot " + slot + " to " + ItemInvModificationTracker.stackToFullString(to) + "!"
             );
@@ -68,7 +68,7 @@ public interface FixedItemInv extends FixedItemInvView {
     /** Applies the given function to the stack held in the slot, and uses {@link #forceSetInvStack(int, ItemStack)} on
      * the result (Which will throw an exception if the returned stack is not valid for this inventory). */
     default void modifySlot(int slot, Function<ItemStack, ItemStack> function) {
-        forceSetInvStack(slot, function.apply(getInvStack(slot)));
+        forceSetInvStack(slot, function.apply(getStack(slot)));
     }
 
     @Override
@@ -165,9 +165,9 @@ public interface FixedItemInv extends FixedItemInvView {
 
         /** @return The {@link ItemStack} that is stored in this {@link FixedItemInv}. Changing this will
          *         <em>always</em> change this inventory. As such you must always call {@link #markDirty()} or
-         *         {@link #setInvStack(int, ItemStack, Simulation)} after you have finished modifying it. */
+         *         {@link #setStack(int, ItemStack, Simulation)} after you have finished modifying it. */
         @Override
-        ItemStack getInvStack(int slot);
+        ItemStack getStack(int slot);
 
         /** Checks to see if the given stack is valid for a given slot. This ignores any current stacks in the slot.
          * Note that this should only compare the {@link Item} contained in {@link ItemStack}'s, because callers can
@@ -183,11 +183,11 @@ public interface FixedItemInv extends FixedItemInvView {
         }
 
         /** @param to The new stack to set this to. If this is identically equal (with ==) to the stack held in this
-         *            inventory (so it was returned by {@link #getInvStack(int)}) then this will return true. */
+         *            inventory (so it was returned by {@link #getStack(int)}) then this will return true. */
         @Override
-        boolean setInvStack(int slot, ItemStack to, Simulation simulation);
+        boolean setStack(int slot, ItemStack to, Simulation simulation);
 
-        /** Informs this inventory that the {@link ItemStack} returned by {@link #getInvStack(int)} has been changed. */
+        /** Informs this inventory that the {@link ItemStack} returned by {@link #getStack(int)} has been changed. */
         void markDirty();
     }
 
@@ -198,7 +198,7 @@ public interface FixedItemInv extends FixedItemInvView {
 
         /** @return a copy of the {@link ItemStack} held in this inventory. */
         @Override
-        default ItemStack getInvStack(int slot) {
+        default ItemStack getStack(int slot) {
             return getUnmodifiableInvStack(slot).copy();
         }
 

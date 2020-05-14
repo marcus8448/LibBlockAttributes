@@ -36,7 +36,7 @@ public class GroupedItemInvViewFixedWrapper implements GroupedItemInvView {
     public Set<ItemStack> getStoredStacks() {
         Set<ItemStack> set = ItemStackCollections.set();
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            ItemStack stack = inv.getInvStack(s);
+            ItemStack stack = inv.getStack(s);
             if (!stack.isEmpty()) {
                 set.add(stack);
             }
@@ -62,7 +62,7 @@ public class GroupedItemInvViewFixedWrapper implements GroupedItemInvView {
         int totalSpace = 0;
         boolean totalSpaceValid = true;
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            ItemStack stack = inv.getInvStack(s);
+            ItemStack stack = inv.getStack(s);
             if (!stack.isEmpty()) {
                 if (filter.matches(stack)) {
                     amount += stack.getCount();
@@ -119,7 +119,7 @@ public class GroupedItemInvViewFixedWrapper implements GroupedItemInvView {
                     int previousAmount = this.getAmount(previous);
                     listener.onChange(this, previous, previousAmount + previous.getCount(), previousAmount);
                 } else {
-                    if (ItemStack.areEqualIgnoreDamage(previous, current)) {
+                    if (ItemStack.areItemsEqualIgnoreDamage(previous, current)) {
                         int currentAmount = this.getAmount(current);
                         int diff = current.getCount() - previous.getCount();
                         listener.onChange(this, current, currentAmount - diff, currentAmount);

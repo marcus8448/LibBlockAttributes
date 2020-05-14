@@ -17,7 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.EmptyFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -356,7 +356,7 @@ public abstract class FluidKey {
             if (rawFluid instanceof EmptyFluid && rawFluid != Fluids.EMPTY) {
                 throw new IllegalArgumentException("Different empty fluid!");
             }
-            if (rawFluid instanceof BaseFluid && rawFluid != ((BaseFluid) rawFluid).getStill()) {
+            if (rawFluid instanceof FlowableFluid && rawFluid != ((FlowableFluid) rawFluid).getStill()) {
                 throw new IllegalArgumentException("Only the still version of fluids are allowed!");
             }
         }
@@ -529,16 +529,14 @@ public abstract class FluidKey {
         }
         Identifier id = getAsIdentifier(json, key);
 
-        if (registry.containsId(id)) {
-            T value = registry.get(id);
-            if (value != null) {
-                if (registry instanceof DefaultedRegistry<?>) {
-                    if (value != registry.get(((DefaultedRegistry<?>) registry).getDefaultId())) {
-                        return value;
-                    }
-                } else {
+        T value = registry.get(id);
+        if (value != null) {
+            if (registry instanceof DefaultedRegistry<?>) {
+                if (value != registry.get(((DefaultedRegistry<?>) registry).getDefaultId())) {
                     return value;
                 }
+            } else {
+                return value;
             }
         }
 

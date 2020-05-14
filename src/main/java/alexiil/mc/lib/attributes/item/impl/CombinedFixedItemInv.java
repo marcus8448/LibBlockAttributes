@@ -66,8 +66,8 @@ public class CombinedFixedItemInv<InvType extends FixedItemInv> extends Combined
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
-        return getInv(slot).setInvStack(getSubSlot(slot), to, simulation);
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
+        return getInv(slot).setStack(getSubSlot(slot), to, simulation);
     }
 
     @Override

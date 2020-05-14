@@ -88,7 +88,7 @@ public class CombinedFixedItemInvView<InvType extends FixedItemInvView> implemen
         }
 
         throw new IllegalArgumentException(
-            "Slot must be less than getInvSize() (was " + slot + ", maximum slot is " + (invSize - 1) + ")"
+            "Slot must be less than size() (was " + slot + ", maximum slot is " + (invSize - 1) + ")"
         );
     }
 
@@ -115,13 +115,13 @@ public class CombinedFixedItemInvView<InvType extends FixedItemInvView> implemen
         }
 
         throw new IllegalArgumentException(
-            "Slot must be less than getInvSize() (was " + slot + ", maximum slot is " + (invSize - 1) + ")"
+            "Slot must be less than size() (was " + slot + ", maximum slot is " + (invSize - 1) + ")"
         );
     }
 
     @Override
-    public ItemStack getInvStack(int slot) {
-        return getInv(slot).getInvStack(getSubSlot(slot));
+    public ItemStack getStack(int slot) {
+        return getInv(slot).getStack(getSubSlot(slot));
     }
 
     @Override

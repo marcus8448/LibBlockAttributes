@@ -19,7 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -30,6 +30,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.WorldView;
@@ -46,7 +47,7 @@ import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraft.world.dimension.TheNetherDimension;
 
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
-import alexiil.mc.lib.attributes.fluid.mixin.impl.BaseFluidAccessor;
+import alexiil.mc.lib.attributes.fluid.mixin.impl.FlowableFluidAccessor;
 import alexiil.mc.lib.attributes.fluid.volume.FluidEntry.FluidFloatingEntry;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey.FluidKeyBuilder;
 
@@ -58,7 +59,7 @@ public final class FluidKeys {
     public static final Identifier MISSING_SPRITE = new Identifier("minecraft", "missingno");
 
     private static final String ERROR_CAST_MIXIN_JUNIT_SUFFIX
-        = "cannot be cast to alexiil.mc.lib.attributes.fluid.mixin.impl.BaseFluidAccessor";
+        = "cannot be cast to alexiil.mc.lib.attributes.fluid.mixin.impl.FlowableFluidAccessor";
 
     public static final FluidKey EMPTY;
     public static final FluidKey LAVA;
@@ -99,9 +100,9 @@ public final class FluidKeys {
 
     public static synchronized void put(Fluid fluid, FluidKey fluidKey) {
         FLUIDS.put(fluid, fluidKey);
-        if (fluid instanceof BaseFluid) {
-            FLUIDS.put(((BaseFluid) fluid).getStill(), fluidKey);
-            FLUIDS.put(((BaseFluid) fluid).getFlowing(), fluidKey);
+        if (fluid instanceof FlowableFluid) {
+            FLUIDS.put(((FlowableFluid) fluid).getStill(), fluidKey);
+            FLUIDS.put(((FlowableFluid) fluid).getFlowing(), fluidKey);
         }
     }
 
@@ -138,8 +139,8 @@ public final class FluidKeys {
         }
         FluidKey fluidKey = FLUIDS.get(fluid);
         if (fluidKey == null) {
-            if (fluid instanceof BaseFluid) {
-                BaseFluid base = (BaseFluid) fluid;
+            if (fluid instanceof FlowableFluid) {
+                FlowableFluid base = (FlowableFluid) fluid;
                 fluid = base.getStill();
                 if (fluid == null) {
                     throw new IllegalStateException("fluid.getStill() returned a null fluid! (from " + fluid + ")");
@@ -155,12 +156,12 @@ public final class FluidKeys {
         Block block = fluid.getDefaultState().getBlockState().getBlock();
         Text name = new TranslatableText(block.getTranslationKey());
         FluidKeyBuilder builder = new FluidKeyBuilder(fluid).setName(name);
-        if (fluid instanceof BaseFluid) {
-            BaseFluid bf = (BaseFluid) fluid;
+        if (fluid instanceof FlowableFluid) {
+            FlowableFluid bf = (FlowableFluid) fluid;
             try {
                 builder.setViscosity(FluidAmount.of(bf.getTickRate(VoidWorldView.OVERWORLD), 5));
                 builder.setNetherViscosity(FluidAmount.of(bf.getTickRate(VoidWorldView.NETHER), 5));
-                BaseFluidAccessor bfa = (BaseFluidAccessor) bf;
+                FlowableFluidAccessor bfa = (FlowableFluidAccessor) bf;
                 builder.setCohesion(FluidAmount.ofWhole(bfa.lba_getLevelDecrease(VoidWorldView.OVERWORLD)));
                 builder.setNetherCohesion(FluidAmount.ofWhole(bfa.lba_getLevelDecrease(VoidWorldView.NETHER)));
             } catch (UnsupportedOperationException uoe) {
@@ -236,7 +237,7 @@ public final class FluidKeys {
         private final WorldBorder border;
 
         private VoidWorldView(boolean nether) {
-            Biome biome = nether ? Biomes.NETHER : Biomes.PLAINS;
+            Biome biome = nether ? Biomes.NETHER_WASTES : Biomes.PLAINS;
             biomeAccess = new BiomeAccess((x, y, z) -> biome, 42, (a, b, c, d, e) -> biome);
             dim = nether ? new TheNetherDimension(null, DimensionType.THE_NETHER)
                 : new OverworldDimension(null, DimensionType.OVERWORLD);
@@ -246,6 +247,11 @@ public final class FluidKeys {
         @Override
         public String toString() {
             return "LBA_VoidWorldView_" + name();
+        }
+
+        @Override
+        public float getBrightness(Direction direction, boolean shaded) {
+            return 0;
         }
 
         @Override
@@ -316,6 +322,11 @@ public final class FluidKeys {
         @Override
         public Dimension getDimension() {
             return dim;
+        }
+
+        @Override
+        public DimensionType method_27983() {
+            return dim.getType();
         }
     }
 }

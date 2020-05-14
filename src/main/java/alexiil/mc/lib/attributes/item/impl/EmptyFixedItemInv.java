@@ -38,7 +38,7 @@ public enum EmptyFixedItemInv implements ModifiableFixedItemInv, NullVariant {
     }
 
     @Override
-    public ItemStack getInvStack(int slot) {
+    public ItemStack getStack(int slot) {
         throw throwInvalidSlotException();
     }
 
@@ -77,7 +77,7 @@ public enum EmptyFixedItemInv implements ModifiableFixedItemInv, NullVariant {
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
         throw throwInvalidSlotException();
     }
 

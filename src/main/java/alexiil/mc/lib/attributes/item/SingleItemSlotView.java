@@ -31,7 +31,7 @@ public class SingleItemSlotView {
     }
 
     public final ItemStack get() {
-        return backingView.getInvStack(slot);
+        return backingView.getStack(slot);
     }
 
     public final int getMaxAmount(ItemStack stack) {

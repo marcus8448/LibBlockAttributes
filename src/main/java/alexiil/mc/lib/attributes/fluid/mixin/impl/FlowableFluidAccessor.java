@@ -7,14 +7,14 @@
  */
 package alexiil.mc.lib.attributes.fluid.mixin.impl;
 
+import net.minecraft.fluid.FlowableFluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.fluid.BaseFluid;
 import net.minecraft.world.WorldView;
 
-@Mixin(BaseFluid.class)
-public interface BaseFluidAccessor {
+@Mixin(FlowableFluid.class)
+public interface FlowableFluidAccessor {
     @Invoker("getLevelDecreasePerBlock")
     int lba_getLevelDecrease(WorldView worldView);
 }

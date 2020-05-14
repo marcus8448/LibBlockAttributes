@@ -44,8 +44,8 @@ public class DelegatingFixedItemInv implements FixedItemInv {
     }
 
     @Override
-    public ItemStack getInvStack(int slot) {
-        return delegate.getInvStack(slot);
+    public ItemStack getStack(int slot) {
+        return delegate.getStack(slot);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class DelegatingFixedItemInv implements FixedItemInv {
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
-        return delegate.setInvStack(slot, to, simulation);
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
+        return delegate.setStack(slot, to, simulation);
     }
 
     @Override

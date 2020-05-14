@@ -18,7 +18,7 @@ import alexiil.mc.lib.attributes.item.FixedItemInvView;
  *             <p>
  *             Full explanation: As of LBA 0.5.0 there's been a large change to how inventories work to be much closer
  *             to vanilla - inventories no longer return immutable stacks from
- *             {@link FixedItemInvView#getInvStack(int)}, and 2 new sub-interfaces have been created to handle the
+ *             {@link FixedItemInvView#getStack(int)}, and 2 new sub-interfaces have been created to handle the
  *             different ways of using this, either {@link ModifiableFixedItemInv} (which exposes a markDirty() method
  *             just like vanilla {@link Inventory} does), or {@link CopyingFixedItemInv} (which returns copies of the
  *             internal {@link ItemStack} and supports complete filtering and listener capabilities).
@@ -39,7 +39,7 @@ public class SimpleFixedItemInv extends FullFixedItemInv {
      *             <p>
      *             Full explanation: As of LBA 0.5.0 there's been a large change to how inventories work to be much
      *             closer to vanilla - inventories no longer return immutable stacks from
-     *             {@link FixedItemInvView#getInvStack(int)}, and 2 new sub-interfaces have been created to handle the
+     *             {@link FixedItemInvView#getStack(int)}, and 2 new sub-interfaces have been created to handle the
      *             different ways of using this, either {@link ModifiableFixedItemInv} (which exposes a markDirty()
      *             method just like vanilla {@link Inventory} does), or {@link CopyingFixedItemInv} (which returns
      *             copies of the internal {@link ItemStack} and supports complete filtering and listener capabilities).

@@ -24,6 +24,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -351,11 +353,12 @@ public abstract class WeightedFluidVolume<T> extends FluidVolume {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public List<Text> getTooltipText(TooltipContext ctx) {
         List<Text> list = super.getTooltipText(ctx);
         if (ctx.isAdvanced()) {
             for (Entry<T, FluidAmount> entry : values.entrySet()) {
-                Text text = new LiteralText(entry.getKey() + " of ");
+                LiteralText text = new LiteralText(entry.getKey() + " of ");
                 list.add(text.append(getTextFor(entry.getKey())).formatted(Formatting.GRAY));
             }
         }

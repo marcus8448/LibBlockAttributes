@@ -33,7 +33,7 @@ import alexiil.mc.lib.attributes.item.impl.SubFixedItemInvView;
  * <ul>
  * <li>The amount of every slot will never exceed 64, the normal maximum stack size of minecraft.</li>
  * <li>The stack will stay in the slot until it is removed or changed by something else. (So setting the stack in a slot
- * of an {@link FixedItemInv} will reflect that change in {@link #getInvStack(int)}).</li>
+ * of an {@link FixedItemInv} will reflect that change in {@link #getStack(int)}).</li>
  * </ul>
  * <p>
  * The attribute is stored in {@link ItemAttributes#FIXED_INV_VIEW}.
@@ -58,16 +58,16 @@ public interface FixedItemInvView extends Convertible, AbstractItemInvView {
      *         different limitations on this. Note that this stack might not be valid for this slot in either
      *         {@link #isItemValidForSlot(int, ItemStack)} or {@link #getFilterForSlot(int)}.
      * @throws RuntimeException if the given slot wasn't a valid index. */
-    ItemStack getInvStack(int slot);
+    ItemStack getStack(int slot);
 
     /** @param slot The slot index. Must be a value between 0 (inclusive) and {@link #getSlotCount()} (exclusive) to be
      *            valid. (Like in arrays, lists, etc).
      * @param stack The stack to check for. May be an {@link ItemStack#isEmpty() empty} stack to get the maximum amount
      *            that this can hold of any stack.
      * @return The maximum amount that the given slot can hold of the given stack. This method will ignore the current
-     *         stack in {@link #getInvStack(int)}. The default implementation just delegates to
+     *         stack in {@link #getStack(int)}. The default implementation just delegates to
      *         {@link ItemStack#getMaxCount()}. Note that any setters that this object implements (like
-     *         {@link FixedItemInv#setInvStack(int, ItemStack, Simulation)} should reject stacks that are greater than
+     *         {@link FixedItemInv#setStack(int, ItemStack, Simulation)} should reject stacks that are greater than
      *         this value. (and callers should only call this if they need to check the amounts separately. Note that it
      *         is meaningless to return values greater than the maximum amount an item can be stacked to here, and
      *         callers are free to throw an exception if this is violated. (Basically huge single-slot inventories
@@ -122,7 +122,7 @@ public interface FixedItemInvView extends Convertible, AbstractItemInvView {
 
             @Override
             public ItemStack next() {
-                return getInvStack(index++);
+                return getStack(index++);
             }
 
             @Override
@@ -216,8 +216,8 @@ public interface FixedItemInvView extends Convertible, AbstractItemInvView {
             }
 
             @Override
-            public ItemStack getInvStack(int slot) {
-                return real.getInvStack(slot);
+            public ItemStack getStack(int slot) {
+                return real.getStack(slot);
             }
 
             @Override

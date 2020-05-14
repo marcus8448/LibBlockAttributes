@@ -59,7 +59,7 @@ public class CombinedFixedFluidInvView<InvType extends FixedFluidInvView> implem
         }
 
         throw new IllegalArgumentException(
-            "Tank must be less than getInvSize() (was " + tank + ", maximum tank is " + (invSize - 1) + ")"
+            "Tank must be less than size() (was " + tank + ", maximum tank is " + (invSize - 1) + ")"
         );
     }
 
@@ -82,7 +82,7 @@ public class CombinedFixedFluidInvView<InvType extends FixedFluidInvView> implem
         }
 
         throw new IllegalArgumentException(
-            "Tank must be less than getInvSize() (was " + tank + ", maximum tank is " + (invSize - 1) + ")"
+            "Tank must be less than size() (was " + tank + ", maximum tank is " + (invSize - 1) + ")"
         );
     }
 

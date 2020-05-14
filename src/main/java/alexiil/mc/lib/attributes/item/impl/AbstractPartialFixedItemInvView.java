@@ -30,8 +30,8 @@ public abstract class AbstractPartialFixedItemInvView implements FixedItemInvVie
     protected abstract int getInternalSlot(int slot);
 
     @Override
-    public ItemStack getInvStack(int slot) {
-        return inv.getInvStack(getInternalSlot(slot));
+    public ItemStack getStack(int slot) {
+        return inv.getStack(getInternalSlot(slot));
     }
 
     @Override

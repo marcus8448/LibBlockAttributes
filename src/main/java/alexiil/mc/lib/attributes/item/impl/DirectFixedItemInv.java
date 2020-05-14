@@ -13,7 +13,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.Util;
 
 import alexiil.mc.lib.attributes.ListenerRemovalToken;
@@ -71,11 +71,11 @@ public class DirectFixedItemInv implements ModifiableFixedItemInv, GroupedItemIn
     //
     // ##################
 
-    /** @deprecated This used to be necessary in 0.4.x, but since 0.5.0 {@link #getInvStack(int)} just returns the
+    /** @deprecated This used to be necessary in 0.4.x, but since 0.5.0 {@link #getStack(int)} just returns the
      *             itemstack in the slot index. */
     @Deprecated
     public final ItemStack get(int slot) {
-        return getInvStack(slot);
+        return getStack(slot);
     }
 
     /** @deprecated This used to be necessary in 0.4.x, but since 0.5.0 this is unnecessary. */
@@ -154,7 +154,7 @@ public class DirectFixedItemInv implements ModifiableFixedItemInv, GroupedItemIn
     }
 
     @Override
-    public ItemStack getInvStack(int slot) {
+    public ItemStack getStack(int slot) {
         validateSlotIndex(slot);
         return slots.get(slot);
     }
@@ -209,7 +209,7 @@ public class DirectFixedItemInv implements ModifiableFixedItemInv, GroupedItemIn
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
         validateSlotIndex(slot);
         if (to != slots.get(slot) && !isItemValidForSlot(slot, to)) {
             return false;

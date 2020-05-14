@@ -69,7 +69,7 @@ public final class SimpleFixedItemInvInsertable implements ItemInsertable {
         // IntList slotsModified = new IntArrayList();
         //
         // if (slots == null) {
-        // for (int s = 0; s < inv.getInvSize(); s++) {
+        // for (int s = 0; s < inv.size(); s++) {
         // attemptAddToExisting(slotsModified, s, result, simulation);
         // }
         // } else {
@@ -84,7 +84,7 @@ public final class SimpleFixedItemInvInsertable implements ItemInsertable {
     private ItemStack simpleDumbBadInsertionToBeRemoved(ItemStack stack, Simulation simulation) {
         stack = stack.copy();
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            ItemStack inSlot = inv.getInvStack(s);
+            ItemStack inSlot = inv.getStack(s);
             int current = inSlot.isEmpty() ? 0 : inSlot.getCount();
             int max = Math.min(current + stack.getCount(), inv.getMaxAmount(s, stack));
             int addable = max - current;
@@ -100,7 +100,7 @@ public final class SimpleFixedItemInvInsertable implements ItemInsertable {
             } else {
                 inSlot.increment(addable);
             }
-            if (inv.setInvStack(s, inSlot, simulation)) {
+            if (inv.setStack(s, inSlot, simulation)) {
                 stack.decrement(addable);
                 if (stack.isEmpty()) {
                     return ItemStack.EMPTY;

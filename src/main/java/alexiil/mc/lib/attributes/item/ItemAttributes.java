@@ -26,7 +26,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 import alexiil.mc.lib.attributes.Attribute;
@@ -141,7 +141,7 @@ public final class ItemAttributes {
                 InventoryProvider provider = (InventoryProvider) block;
                 SidedInventory inventory = provider.getInventory(state, world, pos);
                 if (inventory != null) {
-                    if (inventory.getInvSize() > 0) {
+                    if (inventory.size() > 0) {
                         final FixedItemInv wrapper;
                         if (direction != null) {
                             wrapper = FixedSidedInventoryVanillaWrapper.create(inventory, blockSide);
@@ -215,7 +215,7 @@ public final class ItemAttributes {
         }
 
         @Override
-        public ItemStack getInvStack(int slot) {
+        public ItemStack getStack(int slot) {
             assert 0 <= slot && slot < 27;
 
             ItemStack stack = ref.get();
@@ -235,7 +235,7 @@ public final class ItemAttributes {
         @Override
         public ItemStack getUnmodifiableInvStack(int slot) {
             // Because we deserialise every time it's safe to just return it
-            return getInvStack(slot);
+            return getStack(slot);
         }
 
         @Override
@@ -258,7 +258,7 @@ public final class ItemAttributes {
         }
 
         @Override
-        public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
+        public boolean setStack(int slot, ItemStack to, Simulation simulation) {
             if (slot <= 0 || slot > 27) {
                 return false;
             }

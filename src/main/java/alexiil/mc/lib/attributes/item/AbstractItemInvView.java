@@ -34,7 +34,7 @@ public interface AbstractItemInvView {
 
     /** Adds the given listener to this inventory, such that
      * {@link InvMarkDirtyListener#onMarkDirty(AbstractItemInvView)} will be called every time that any stored stack is
-     * changed (either from {@link FixedItemInv#setInvStack(int, ItemStack, Simulation)} or
+     * changed (either from {@link FixedItemInv#setStack(int, ItemStack, Simulation)} or
      * {@link ModifiableFixedItemInv#markDirty()}).
      * <p>
      * If the listener is registered (and thus this returns null) then it implies that {@link #getChangeValue()} will

@@ -13,7 +13,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.Util;
 
 import alexiil.mc.lib.attributes.AttributeUtil;
@@ -172,12 +172,12 @@ public class FullFixedItemInv implements CopyingFixedItemInv, ItemTransferable, 
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
         boolean allowed = false;
         if (to.isEmpty()) {
             allowed = true;
         } else {
-            ItemStack current = getInvStack(slot);
+            ItemStack current = getStack(slot);
             if (
                 !current.isEmpty() && current.getCount() > to.getCount() && ItemStackUtil.areEqualIgnoreAmounts(
                     to, current

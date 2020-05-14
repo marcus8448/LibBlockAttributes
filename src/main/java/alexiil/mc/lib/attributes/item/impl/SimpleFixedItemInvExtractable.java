@@ -37,7 +37,7 @@ public final class SimpleFixedItemInvExtractable implements ItemExtractable {
         }
 
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            ItemStack invStack = inv.getInvStack(s);
+            ItemStack invStack = inv.getStack(s);
             if (invStack.isEmpty() || !filter.matches(invStack)) {
                 continue;
             }
@@ -49,7 +49,7 @@ public final class SimpleFixedItemInvExtractable implements ItemExtractable {
             invStack = invStack.copy();
 
             ItemStack addable = invStack.split(maxCount);
-            if (inv.setInvStack(s, invStack, simulation)) {
+            if (inv.setStack(s, invStack, simulation)) {
 
                 if (stack.isEmpty()) {
                     stack = addable;

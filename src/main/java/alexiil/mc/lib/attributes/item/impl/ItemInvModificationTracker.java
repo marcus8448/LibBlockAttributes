@@ -17,7 +17,7 @@ import alexiil.mc.lib.attributes.AttributeUtil;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 
 /** A tracker object that tries to ensure that the "no modification" rule that methods like
- * {@link FixedItemInv#getInvStack(int)} use is followed. */
+ * {@link FixedItemInv#getStack(int)} use is followed. */
 public final class ItemInvModificationTracker {
     private ItemInvModificationTracker() {}
 
@@ -48,7 +48,7 @@ public final class ItemInvModificationTracker {
         }
 
         void check(ItemStack current) {
-            if (ItemStack.areEqualIgnoreDamage(current, copy)) {
+            if (ItemStack.areItemsEqualIgnoreDamage(current, copy)) {
                 return;
             }
             throw new IllegalStateException("The ItemStack that is stored has been changed! (\n\tOriginal = "

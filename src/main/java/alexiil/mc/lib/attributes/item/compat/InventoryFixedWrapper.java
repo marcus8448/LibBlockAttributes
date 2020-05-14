@@ -21,7 +21,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 /** An {@link Inventory} that wraps an {@link FixedItemInv}.
  * <p>
  * One of the {@link Inventory} methods must be overridden by subclasses however:
- * {@link Inventory#canPlayerUseInv(PlayerEntity)}. */
+ * {@link Inventory#canPlayerUse(PlayerEntity)}. */
 public abstract class InventoryFixedWrapper implements Inventory {
 
     protected final FixedItemInv inv;
@@ -34,20 +34,20 @@ public abstract class InventoryFixedWrapper implements Inventory {
     @Override
     public void clear() {
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            inv.setInvStack(s, ItemStack.EMPTY, Simulation.ACTION);
+            inv.setStack(s, ItemStack.EMPTY, Simulation.ACTION);
         }
         slotStatus.clear();
     }
 
     @Override
-    public int getInvSize() {
+    public int size() {
         return inv.getSlotCount();
     }
 
     @Override
-    public boolean isInvEmpty() {
+    public boolean isEmpty() {
         for (int s = 0; s < inv.getSlotCount(); s++) {
-            if (!inv.getInvStack(s).isEmpty()) {
+            if (!inv.getStack(s).isEmpty()) {
                 return false;
             }
         }
@@ -55,41 +55,41 @@ public abstract class InventoryFixedWrapper implements Inventory {
     }
 
     @Override
-    public ItemStack getInvStack(int slot) {
+    public ItemStack getStack(int slot) {
         SlotStatus prev = slotStatus.remove(slot);
         if (prev != null) {
             prev.process(this, slot);
         }
-        ItemStack current = inv.getInvStack(slot);
+        ItemStack current = inv.getStack(slot);
         SlotStatus status = new SlotStatus(current);
         slotStatus.put(slot, status);
         return status.returned;
     }
 
     @Override
-    public ItemStack takeInvStack(int slot, int amount) {
-        ItemStack stack = getInvStack(slot);
+    public ItemStack removeStack(int slot, int amount) {
+        ItemStack stack = getStack(slot);
         ItemStack split = stack.split(amount);
-        setInvStack(slot, stack);
+        setStack(slot, stack);
         return split;
     }
 
     @Override
-    public ItemStack removeInvStack(int slot) {
-        ItemStack stack = getInvStack(slot);
-        setInvStack(slot, ItemStack.EMPTY);
+    public ItemStack removeStack(int slot) {
+        ItemStack stack = getStack(slot);
+        setStack(slot, ItemStack.EMPTY);
         return stack;
     }
 
     @Override
-    public void setInvStack(int slot, ItemStack to) {
+    public void setStack(int slot, ItemStack to) {
         SlotStatus status = slotStatus.remove(slot);
         if (status != null) {
             status.validate(this, slot);
         }
         status = new SlotStatus(to.copy(), to);
         slotStatus.put(slot, status);
-        setInvStackInternal(slot, status.originalCopy);
+        setStackInternal(slot, status.originalCopy);
     }
 
     public boolean softSetInvStack(int slot, ItemStack to) {
@@ -98,22 +98,22 @@ public abstract class InventoryFixedWrapper implements Inventory {
             status.validate(this, slot);
         }
         status = new SlotStatus(to.copy(), to);
-        if (inv.setInvStack(slot, status.originalCopy, Simulation.ACTION)) {
+        if (inv.setStack(slot, status.originalCopy, Simulation.ACTION)) {
             slotStatus.put(slot, status);
             return true;
         }
         return false;
     }
 
-    void setInvStackInternal(int slot, ItemStack to) {
-        if (!inv.setInvStack(slot, to, Simulation.ACTION)) {
+    void setStackInternal(int slot, ItemStack to) {
+        if (!inv.setStack(slot, to, Simulation.ACTION)) {
             throw new IllegalStateException("The FixedItemInv " + inv.getClass() + " didn't accept the stack " + to
                 + " in slot " + slot + "! The inventory may be in a duped (invalid) state!");
         }
     }
 
     @Override
-    public boolean isValidInvStack(int slot, ItemStack stack) {
+    public boolean isValid(int slot, ItemStack stack) {
         return inv.isItemValidForSlot(slot, stack);
     }
 
@@ -132,7 +132,7 @@ public abstract class InventoryFixedWrapper implements Inventory {
         /** A copy of the itemstack that was originally seen in the backing {@link FixedItemInv}. */
         final ItemStack originalCopy;
 
-        /** The itemstack that was returned from {@link InventoryFixedWrapper#getInvStack(int)}. */
+        /** The itemstack that was returned from {@link InventoryFixedWrapper#getStack(int)}. */
         final ItemStack returned;
 
         public SlotStatus(ItemStack current) {
@@ -145,8 +145,8 @@ public abstract class InventoryFixedWrapper implements Inventory {
         }
 
         void validate(InventoryFixedWrapper inv, int slot) {
-            ItemStack current = inv.inv.getInvStack(slot);
-            if (!ItemStack.areEqualIgnoreDamage(originalCopy, current) && !ItemStack.areEqualIgnoreDamage(originalCopy, returned)) {
+            ItemStack current = inv.inv.getStack(slot);
+            if (!ItemStack.areItemsEqualIgnoreDamage(originalCopy, current) && !ItemStack.areItemsEqualIgnoreDamage(originalCopy, returned)) {
                 throw new IllegalStateException("The inventory has been modifed in two places at once! (\n\tcurrent = "
                     + ItemInvModificationTracker.stackToFullString(current) + ", \n\toriginal = "
                     + ItemInvModificationTracker.stackToFullString(originalCopy) + ", \n\tnew = "
@@ -156,11 +156,11 @@ public abstract class InventoryFixedWrapper implements Inventory {
 
         void process(InventoryFixedWrapper inv, int slot) {
             validate(inv, slot);
-            if (ItemStack.areEqualIgnoreDamage(returned, originalCopy)) {
+            if (ItemStack.areItemsEqualIgnoreDamage(returned, originalCopy)) {
                 // Nothing changed
                 return;
             }
-            inv.setInvStackInternal(slot, returned);
+            inv.setStackInternal(slot, returned);
             ItemInvModificationTracker.trackNeverChanging(returned);
         }
     }

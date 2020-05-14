@@ -119,7 +119,7 @@ public final class ItemInvUtil {
     // #######################
 
     /** Inserts a single ItemStack into a {@link FixedItemInv}, using only
-     * {@link FixedItemInv#setInvStack(int, ItemStack, Simulation)}. As such this is useful for implementations of
+     * {@link FixedItemInv#setStack(int, ItemStack, Simulation)}. As such this is useful for implementations of
      * {@link ItemInsertable} (or others) for the base implementation.
      * 
      * @param toInsert The stack to insert. This won't be modified.
@@ -128,7 +128,7 @@ public final class ItemInvUtil {
         if (toInsert.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        ItemStack inSlot = inv.getInvStack(slot);
+        ItemStack inSlot = inv.getStack(slot);
         int current = inSlot.isEmpty() ? 0 : inSlot.getCount();
         int max = Math.min(current + toInsert.getCount(), inv.getMaxAmount(slot, toInsert));
         int addable = max - current;
@@ -145,7 +145,7 @@ public final class ItemInvUtil {
             inSlot = inSlot.copy();
             inSlot.increment(addable);
         }
-        if (inv.setInvStack(slot, inSlot, simulation)) {
+        if (inv.setStack(slot, inSlot, simulation)) {
             toInsert = toInsert.copy();
             toInsert.decrement(addable);
             if (toInsert.isEmpty()) {
@@ -156,7 +156,7 @@ public final class ItemInvUtil {
     }
 
     /** Extracts a single ItemStack from a {@link FixedItemInv}, using only
-     * {@link FixedItemInv#setInvStack(int, ItemStack, Simulation)}. As such this is useful for implementations of
+     * {@link FixedItemInv#setStack(int, ItemStack, Simulation)}. As such this is useful for implementations of
      * {@link ItemInsertable} (or others) for the base implementation.
      * 
      * @param filter The filter to match on. If this is null then it will match any {@link ItemStack}.
@@ -168,7 +168,7 @@ public final class ItemInvUtil {
         FixedItemInv inv, int slot, @Nullable ItemFilter filter, ItemStack toAddWith, int maxAmount,
         Simulation simulation
     ) {
-        ItemStack inSlot = inv.getInvStack(slot);
+        ItemStack inSlot = inv.getStack(slot);
         if (inSlot.isEmpty() || (filter != null && !filter.matches(inSlot))) {
             return toAddWith;
         }
@@ -184,7 +184,7 @@ public final class ItemInvUtil {
         inSlot = inSlot.copy();
 
         ItemStack addable = inSlot.split(maxAmount);
-        if (inv.setInvStack(slot, inSlot, simulation)) {
+        if (inv.setStack(slot, inSlot, simulation)) {
             if (toAddWith.isEmpty()) {
                 toAddWith = addable;
             } else {

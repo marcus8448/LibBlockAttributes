@@ -25,8 +25,8 @@ public class MappedFixedItemInv extends MappedFixedItemInvView implements FixedI
     }
 
     @Override
-    public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
-        return ((FixedItemInv) inv).setInvStack(getInternalSlot(slot), to, simulation);
+    public boolean setStack(int slot, ItemStack to, Simulation simulation) {
+        return ((FixedItemInv) inv).setStack(getInternalSlot(slot), to, simulation);
     }
 
     @Override
